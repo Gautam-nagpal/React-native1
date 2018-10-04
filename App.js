@@ -1,32 +1,26 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
-import { createDrawerNavigator } from "react-navigation";
-import Homescreen from "./screens/Homescreen";
-import Notificationscreen from "./screens/Notificarionscreen";
+import { createSwitchNavigator } from "react-navigation";
+
+import Loginscreen from "./screens/Loginscreen";
+import QuotesHome from "./screens/QuotesHome";
+import Signupscreen from "./screens/Signupscreen";
 
 export default class App extends Component {
   state = {};
   render() {
-    return <MyApp />;
+    return <Rootstack />;
   }
 }
 
-const MyApp = createDrawerNavigator(
+const Rootstack = createSwitchNavigator(
   {
-    Home: {
-      screen: Homescreen
-    },
-    Notification: {
-      screen: Notificationscreen
-    }
+    Home: Loginscreen,
+    Signupscreen: Signupscreen,
+    QuotesHome: QuotesHome
   },
   {
-    drawerPosition: "left",
-    initialRouteName: "Home",
-    drawerWidth: 270,
-    drawerOpenRoute: "DrawerOpen",
-    drawerCloseRoute: "DrawerClose",
-    drawerToggleRoute: "DrawerToggle"
+    initialRouteName: "Home"
   }
 );
 

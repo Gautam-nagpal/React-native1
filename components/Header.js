@@ -11,12 +11,18 @@ class Header extends Component {
         <Icon
           name="ios-menu"
           size={40}
+          style={{ color: "#fff" }}
           onPress={() => this.props.navigation.openDrawer()}
         />
         <View>
           <Text style={styles.text}>Categories</Text>
         </View>
-        <Icon name="ios-add" size={40} />
+        <Icon
+          name="ios-add"
+          style={{ color: "#fff" }}
+          size={40}
+          onPress={() => this.props.navigation.navigate("Home")}
+        />
       </View>
     );
   }
@@ -34,6 +40,7 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 30,
-    alignItems: "center"
+    alignItems: "center",
+    color: "#fff"
   }
 });

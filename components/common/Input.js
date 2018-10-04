@@ -13,7 +13,9 @@ export default class Input extends Component {
       <View style={styles.spacetop}>
         <TextInput
           style={styles.searchbar}
-          placeholder="Search Quotes"
+          placeholder={this.props.placeholder}
+          placeholderTextColor="#fff"
+          underlineColorAndroid="transparent"
           onChangeText={text => this.setState({ text })}
         />
       </View>
@@ -24,7 +26,6 @@ export default class Input extends Component {
 const styles = StyleSheet.create({
   spacetop: {
     marginTop: 18,
-    marginBottom: 20,
     flexDirection: "row",
     alignSelf: "center",
     alignItems: "center",
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 330,
     height: 40,
-    paddingLeft: 20
+    paddingLeft: 20,
+    color: "#fff"
   }
 });

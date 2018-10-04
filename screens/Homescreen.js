@@ -17,7 +17,9 @@ class Homescreen extends Component {
     return (
       <View style={styles.container}>
         <Header {...this.props} />
-        <Input />
+
+        <Input placeholder="Search Quotes" style={styles.searchbar} />
+
         <FlatList
           style={styles.list}
           data={[
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
   },
   list: {
     alignContent: "center",
-    marginBottom: 30
+    marginBottom: 30,
+    marginTop: 10
   },
   box: {
     marginBottom: 20,
@@ -67,7 +70,11 @@ const styles = StyleSheet.create({
   text: {
     paddingTop: 5,
     display: "flex",
-    alignSelf: "center"
+    alignSelf: "center",
+    color: "#fff"
+  },
+  searchbar: {
+    marginBottom: 20
   }
 });
 

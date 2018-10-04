@@ -18,7 +18,7 @@ class Notificationscreen extends Component {
     return (
       <View style={styles.container}>
         <Header {...this.props} />
-        <Input />
+        <Input placeholder="Search Quotes" />
 
         <FlatList
           style={styles.list}
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
   },
   list: {
     alignContent: "center",
-    marginBottom: 30
+    marginBottom: 30,
+    marginTop: 10
   },
   box: {
     marginBottom: 20,
@@ -83,9 +84,9 @@ const styles = StyleSheet.create({
   quoteimage: {
     justifyContent: "flex-end",
     height: 80,
-    borderRadius: 6,
-    borderBottomRightRadius: 7,
-    width: 50
+    borderBottomRightRadius: 6,
+    borderTopRightRadius: 6,
+    width: 60
   }
 });
 
