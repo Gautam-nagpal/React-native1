@@ -1,45 +1,84 @@
 import React, { Component } from "react";
 
 import { Text, View, Image, Button, StyleSheet, FlatList } from "react-native";
+
+import Icon from "react-native-vector-icons/Ionicons";
 import Header from "../components/Header";
 import Input from "../components/common/Input";
+
+let user = [
+  {
+    key: "quote 1",
+    liked: false
+  },
+  {
+    key: "quote 2",
+    liked: false
+  },
+  {
+    key: "quote 3",
+    liked: false
+  },
+  {
+    key: "quote 4",
+    liked: false
+  },
+  {
+    key: "quote 5",
+    liked: false
+  },
+  {
+    key: "quote 6",
+    liked: false
+  }
+];
 
 class Notificationscreen extends Component {
   static navigationOptions = {
     drawerIcon: (
       <Image
         style={{ height: 30, width: 30 }}
-        source={require("../assets/notification.png")}
+        source={require("../assets/home.png")}
       />
     )
   };
-  state = {};
+  state = {
+    user: user
+  };
+
+  liked = (data, index) => {
+    let { user } = this.state;
+    const updatedUser = [...user];
+
+    updatedUser[index] = {
+      ...updatedUser[index],
+      liked: !updatedUser[index].liked
+    };
+
+    this.setState({
+      user: updatedUser
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Header {...this.props} />
+        <Header header="Quotes" {...this.props} />
         <Input placeholder="Search Quotes" />
 
         <FlatList
           style={styles.list}
-          data={[
-            {
-              key:
-                "Inspirational kjbaskc asjcas c a a a a aa a aa a ascas asc asc asca  "
-            },
-            { key: "Love" },
-            { key: "Educational" },
-            { key: "Life" },
-            { key: "Motivational" },
-            { key: "Friendship" },
-            { key: "Smile" },
-            { key: "Positive" },
-            { key: "Funny" },
-            { key: "Emotional" }
-          ]}
-          renderItem={({ item }) => (
+          data={this.state.user}
+          renderItem={({ item, index }) => (
             <View style={styles.box}>
               <Text style={styles.text}>{item.key}</Text>
+              <Icon
+                name={`md-heart${item.liked ? "" : "-outline"}`}
+                size={30}
+                style={styles.like}
+                onPress={() => this.liked(item, index)}
+              />
+
               <Image
                 source={require("../assets/quotes.jpeg")}
                 style={styles.quoteimage}
@@ -58,7 +97,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#03b393"
   },
   list: {
-    alignContent: "center",
     marginBottom: 30,
     marginTop: 10
   },
@@ -72,21 +110,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 330,
     height: 80,
-    flexWrap: "wrap",
-    alignContent: "space-between"
+    flexWrap: "wrap"
   },
   text: {
     paddingTop: 5,
     paddingLeft: 10,
     width: 260,
-    display: "flex"
+    height: 46
   },
   quoteimage: {
-    justifyContent: "flex-end",
+    alignSelf: "flex-end",
     height: 80,
     borderBottomRightRadius: 6,
     borderTopRightRadius: 6,
-    width: 60
+    width: 70
+  },
+  like: {
+    alignItems: "flex-end",
+
+    paddingLeft: 5
   }
 });
 

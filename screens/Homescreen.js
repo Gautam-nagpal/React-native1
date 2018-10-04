@@ -9,14 +9,14 @@ class Homescreen extends Component {
     drawerIcon: (
       <Image
         style={{ height: 30, width: 30 }}
-        source={require("../assets/home.png")}
+        source={require("../assets/category.png")}
       />
     )
   };
   render() {
     return (
       <View style={styles.container}>
-        <Header {...this.props} />
+        <Header header="Categories" {...this.props} />
 
         <Input placeholder="Search Quotes" style={styles.searchbar} />
 

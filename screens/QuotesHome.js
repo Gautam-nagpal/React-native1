@@ -29,10 +29,10 @@ const CustomDrawerContentComponent = props => (
 const MyApp = createDrawerNavigator(
   {
     Home: {
-      screen: Homescreen
-    },
-    Notification: {
       screen: Notificationscreen
+    },
+    Categories: {
+      screen: Homescreen
     }
   },
   {

@@ -48,6 +48,7 @@ class Loginscreen extends Component {
   };
 
   render() {
+    let { errors = {} } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Loginscreen</Text>
@@ -59,7 +60,10 @@ class Loginscreen extends Component {
           underlineColorAndroid="transparent"
           onChangeText={this.handlechange("username")}
         />
-        <Text style={styles.error}>{this.state.errors.username}</Text>
+        {errors.username ? (
+          <Text style={styles.error}>{errors.username}</Text>
+        ) : null}
+
         <TextInput
           style={styles.searchbar}
           placeholder="Password"
@@ -68,7 +72,9 @@ class Loginscreen extends Component {
           secureTextEntry={true}
           onChangeText={this.handlechange("password")}
         />
-        <Text style={styles.error}>{this.state.errors.password}</Text>
+        {errors.password ? (
+          <Text style={styles.error}>{errors.password}</Text>
+        ) : null}
 
         <View style={{ width: "90%", marginTop: 10 }}>
           <Button

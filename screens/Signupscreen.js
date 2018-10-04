@@ -55,6 +55,7 @@ class Signupscreen extends Component {
   };
 
   render() {
+    let { errors = {} } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Signup</Text>
@@ -66,7 +67,7 @@ class Signupscreen extends Component {
           underlineColorAndroid="transparent"
           onChangeText={this.handlechange("name")}
         />
-        <Text style={styles.error}>{this.state.errors.name}</Text>
+        {errors.name ? <Text style={styles.error}>{errors.name}</Text> : null}
 
         <TextInput
           style={styles.searchbar}
@@ -75,7 +76,9 @@ class Signupscreen extends Component {
           underlineColorAndroid="transparent"
           onChangeText={this.handlechange("username")}
         />
-        <Text style={styles.error}>{this.state.errors.username}</Text>
+        {errors.username ? (
+          <Text style={styles.error}>{errors.username}</Text>
+        ) : null}
 
         <TextInput
           style={styles.searchbar}
@@ -84,7 +87,7 @@ class Signupscreen extends Component {
           underlineColorAndroid="transparent"
           onChangeText={this.handlechange("email")}
         />
-        <Text style={styles.error}>{this.state.errors.email}</Text>
+        {errors.email ? <Text style={styles.error}>{errors.email}</Text> : null}
 
         <TextInput
           style={styles.searchbar}
@@ -94,7 +97,9 @@ class Signupscreen extends Component {
           secureTextEntry={true}
           onChangeText={this.handlechange("password")}
         />
-        <Text style={styles.error}>{this.state.errors.password}</Text>
+        {errors.password ? (
+          <Text style={styles.error}>{errors.password}</Text>
+        ) : null}
 
         <TextInput
           style={styles.searchbar}
@@ -104,7 +109,9 @@ class Signupscreen extends Component {
           secureTextEntry={true}
           onChangeText={this.handlechange("confirmpassword")}
         />
-        <Text style={styles.error}>{this.state.errors.confirmpassword}</Text>
+        {errors.confirmpassword ? (
+          <Text style={styles.error}>{errors.confirmpassword}</Text>
+        ) : null}
 
         <View style={{ width: "90%", marginTop: 10 }}>
           <Button
@@ -155,8 +162,8 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
-    margin: 0,
-    padding: 0
+    marginTop: 0,
+    paddingTop: 0
   }
 });
 
