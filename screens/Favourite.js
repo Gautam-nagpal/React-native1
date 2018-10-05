@@ -8,12 +8,12 @@ import Header from "../components/Header";
 import Input from "../components/common/Input";
 import { likedQuote } from "../action/Action";
 
-class Notificationscreen extends Component {
+class Favourite extends Component {
   static navigationOptions = {
     drawerIcon: (
       <Image
         style={{ height: 30, width: 30 }}
-        source={require("../assets/home.png")}
+        source={require("../assets/like.png")}
       />
     )
   };
@@ -48,29 +48,29 @@ class Notificationscreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header header="Quotes" {...this.props} />
-        <Input placeholder="Search Quotes" />
+        <Header header="favourite" {...this.props} />
 
         <FlatList
           style={styles.list}
           data={this.state.user}
-          // keyExtractor={(item1, index) => {
-          //   return `${item1.key}`;
-          // }}
           renderItem={({ item, index }) => (
-            <View style={styles.box}>
-              <Text style={styles.text}>{item.key}</Text>
-              <Icon
-                name={`md-heart${item.liked ? "" : "-outline"}`}
-                size={30}
-                style={styles.like}
-                onPress={() => this.liked(index)}
-              />
+            <View>
+              {item.liked ? (
+                <View style={styles.box}>
+                  <Text style={styles.text}>{item.key}</Text>
+                  <Icon
+                    name={`md-heart${item.liked ? "" : "-outline"}`}
+                    size={30}
+                    style={styles.like}
+                    onPress={() => this.liked(index)}
+                  />
 
-              <Image
-                source={require("../assets/quotes.jpeg")}
-                style={styles.quoteimage}
-              />
+                  <Image
+                    source={require("../assets/quotes.jpeg")}
+                    style={styles.quoteimage}
+                  />
+                </View>
+              ) : null}
             </View>
           )}
         />
@@ -126,4 +126,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Notificationscreen);
+export default connect(mapStateToProps)(Favourite);

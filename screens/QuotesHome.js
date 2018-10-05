@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { createDrawerNavigator, DrawerItems } from "react-navigation";
 import Homescreen from "./Homescreen";
 import Notificationscreen from "./Notificarionscreen";
+import Favourite from "./Favourite";
 
 export default class QuotesHome extends Component {
   state = {};
@@ -33,6 +34,9 @@ const MyApp = createDrawerNavigator(
     },
     Categories: {
       screen: Homescreen
+    },
+    Favourite: {
+      screen: Favourite
     }
   },
   {
