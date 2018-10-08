@@ -3,13 +3,15 @@ import React, { Component } from "react";
 import { Text, TextInput, View, Image, Button, StyleSheet } from "react-native";
 import { createSwitchNavigator } from "react-navigation";
 import { validateLogin } from "../validation/Validation";
+import { LoginApi } from "../api/Api";
+import axios from "axios";
 
 class Loginscreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {
-        username: "",
+        email: "",
         password: ""
       },
       errors: {},
@@ -33,9 +35,29 @@ class Loginscreen extends Component {
   };
 
   login = () => {
-    if (this.isValid()) {
-      this.props.navigation.navigate("Signupscreen");
-    }
+    // if (this.isValid()) {
+    //   LoginApi(this.state.user);
+    //   // this.props.navigation.navigate("Signupscreen");
+    // }
+
+    let { user } = this.state;
+    console.log(user, "user");
+    axios
+      .post(`https://crispage-api.herokuapp.com/login`, this.state.user)
+      .then(response => {
+        console.log("response", response);
+
+        return response.json();
+      })
+      .then(responseJson => {
+        console.log("api response", responseJson);
+
+        return responseJson;
+      })
+      .catch(err => {
+        console.log("error", err);
+        return err;
+      });
   };
 
   isValid = () => {
@@ -55,10 +77,10 @@ class Loginscreen extends Component {
         <TextInput
           defaultValue=""
           style={styles.searchbar}
-          placeholder="Username"
+          placeholder="email"
           placeholderTextColor="#fff"
           underlineColorAndroid="transparent"
-          onChangeText={this.handlechange("username")}
+          onChangeText={this.handlechange("email")}
         />
         {errors.username ? (
           <Text style={styles.error}>{errors.username}</Text>
@@ -69,7 +91,7 @@ class Loginscreen extends Component {
           placeholder="Password"
           placeholderTextColor="#fff"
           underlineColorAndroid="transparent"
-          secureTextEntry={true}
+          // secureTextEntry={true}
           onChangeText={this.handlechange("password")}
         />
         {errors.password ? (

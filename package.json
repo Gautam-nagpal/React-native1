@@ -6,9 +6,11 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "expo": "^30.0.1",
     "git": "^0.1.5",
     "is_js": "^0.9.0",
@@ -19,5 +21,8 @@
     "react-navigation": "^2.17.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "react-native-debugger-open": "^0.3.17"
   }
 }
