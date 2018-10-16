@@ -5,8 +5,12 @@ import Validator from "is_js";
 export function validateLogin(user) {
   let errors = {};
 
-  if (Validator.empty(user.username)) {
-    errors.username = "please enter username";
+  if (Validator.empty(user.email)) {
+    errors.email = "Please Enter Email";
+  }
+
+  if (!Validator.empty(user.email) && !Validator.email(user.email)) {
+    errors.email = "Email Format is invalid ";
   }
 
   if (Validator.empty(user.password)) {

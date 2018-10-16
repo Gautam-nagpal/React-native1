@@ -1,10 +1,24 @@
 import React, { Component } from "react";
+import Expo from "expo";
+import FBSDK from "react-native-fbsdk";
+import FacebookService from "./demo";
 
-import { Text, TextInput, View, Image, Button, StyleSheet } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  Image,
+  Button,
+  StyleSheet,
+  ActivityIndicator
+} from "react-native";
 import { createSwitchNavigator } from "react-navigation";
 import { validateLogin } from "../validation/Validation";
-import { LoginApi } from "../api/Api";
-import axios from "axios";
+
+const id = "501792203636783";
+// const FBSDK = require("react-native-fbsdk");
+const { LoginButton, AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
+// const { LoginManager } = FBSDK;
 
 class Loginscreen extends Component {
   constructor(props) {
@@ -15,7 +29,7 @@ class Loginscreen extends Component {
         password: ""
       },
       errors: {},
-      demo: ""
+      loader: false
     };
   }
 
@@ -35,29 +49,37 @@ class Loginscreen extends Component {
   };
 
   login = () => {
-    // if (this.isValid()) {
-    //   LoginApi(this.state.user);
-    //   // this.props.navigation.navigate("Signupscreen");
-    // }
-
-    let { user } = this.state;
-    console.log(user, "user");
-    axios
-      .post(`https://crispage-api.herokuapp.com/login`, this.state.user)
-      .then(response => {
-        console.log("response", response);
-
-        return response.json();
-      })
-      .then(responseJson => {
-        console.log("api response", responseJson);
-
-        return responseJson;
-      })
-      .catch(err => {
-        console.log("error", err);
-        return err;
+    if (this.isValid()) {
+      this.setState({
+        loader: true
       });
+
+      let { user } = this.state;
+      console.log(user, "user");
+      const URL = `https://crispage-api.herokuapp.com/login`;
+      fetch(URL, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      })
+        .then(response => {
+          this.setState({
+            loader: false
+          });
+          return response.json();
+        })
+        .then(responseJson => {
+          console.log("api response", responseJson);
+          alert("you are now Logged IN");
+          return responseJson;
+        })
+        .catch(err => {
+          console.log("error", err);
+        });
+    }
   };
 
   isValid = () => {
@@ -69,59 +91,103 @@ class Loginscreen extends Component {
     return isValid;
   };
 
+  loginFacebook = async () => {
+    // const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
+    //   id,
+    //   { permissions: ["public_profile", "email", "user_friends"] }
+    // );
+    // if (type === "success") {
+    //   const response = await fetch(
+    //     `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
+    //   );
+    //   console.log("response", response);
+    //   const json = await response.json();
+    //   console.log("User Info ", json);
+    // } else {
+    //   alert(type);
+    // }
+    // LoginManager.logInWithPublishPermissions([
+    //   "public_profile",
+    //   "email",
+    //   "user_friends"
+    // ]).then(result => {
+    //   if (result.isCancelled) {
+    //     alert("Unable to SignIn ,User cancled ");
+    //   } else {
+    //     alert("Login sucess" + result.grantedPermissions.toString());
+    //   }
+    // });
+  };
+
   render() {
-    let { errors = {} } = this.state;
+    let { errors = {}, loader } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Loginscreen</Text>
-        <TextInput
-          defaultValue=""
-          style={styles.searchbar}
-          placeholder="email"
-          placeholderTextColor="#fff"
-          underlineColorAndroid="transparent"
-          onChangeText={this.handlechange("email")}
-        />
-        {errors.username ? (
-          <Text style={styles.error}>{errors.username}</Text>
-        ) : null}
 
-        <TextInput
-          style={styles.searchbar}
-          placeholder="Password"
-          placeholderTextColor="#fff"
-          underlineColorAndroid="transparent"
-          // secureTextEntry={true}
-          onChangeText={this.handlechange("password")}
-        />
-        {errors.password ? (
-          <Text style={styles.error}>{errors.password}</Text>
-        ) : null}
-
-        <View style={{ width: "90%", marginTop: 10 }}>
-          <Button
-            title="Login"
-            style={styles.button1}
-            color="#212121"
-            onPress={this.login}
-          />
-        </View>
-        <View style={{ width: "90%", marginTop: 10 }}>
-          <Button
-            title="Signup"
-            style={styles.button2}
-            color="#212121"
-            onPress={() => this.props.navigation.navigate("Signupscreen")}
-          />
-          <View style={{ width: "100%", marginTop: 10 }}>
-            <Button
-              title="Quotes"
-              style={styles.button1}
-              color="#212121"
-              onPress={() => this.props.navigation.navigate("QuotesHome")}
+        {loader ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <View>
+            <TextInput
+              defaultValue=""
+              style={styles.searchbar}
+              placeholder="Email"
+              placeholderTextColor="#fff"
+              underlineColorAndroid="transparent"
+              onChangeText={this.handlechange("email")}
             />
+            {errors.email ? (
+              <Text style={styles.error}>{errors.email}</Text>
+            ) : null}
+
+            <TextInput
+              style={styles.searchbar}
+              placeholder="Password"
+              placeholderTextColor="#fff"
+              underlineColorAndroid="transparent"
+              secureTextEntry={true}
+              onChangeText={this.handlechange("password")}
+            />
+            {errors.password ? (
+              <Text style={styles.error}>{errors.password}</Text>
+            ) : null}
+
+            <View style={{ width: "90%", marginTop: 10 }}>
+              <Button
+                title="Login"
+                style={styles.button1}
+                color="#212121"
+                onPress={this.login}
+              />
+            </View>
+            <View style={{ width: "90%", marginTop: 10 }}>
+              <Button
+                title="Signup"
+                style={styles.button2}
+                color="#212121"
+                onPress={() => this.props.navigation.navigate("Signupscreen")}
+              />
+            </View>
+            <View style={{ width: "100%", marginTop: 10 }}>
+              <Button
+                title="Quotes"
+                style={styles.button1}
+                color="#212121"
+                onPress={() => this.props.navigation.navigate("QuotesHome")}
+              />
+            </View>
+            <View style={{ width: "100%", marginTop: 10 }}>
+              <Button
+                title="Login with fb"
+                style={styles.button1}
+                color="#212121"
+                onPress={() => this.loginFacebook()}
+              />
+            </View>
+            <FacebookService />
           </View>
-        </View>
+        )}
       </View>
     );
   }
@@ -141,12 +207,14 @@ const styles = StyleSheet.create({
   },
   button1: {
     borderRadius: 20,
+    justifyContent: "center",
     marginBottom: 10,
     paddingBottom: 10
   },
   button2: {
     marginTop: 10,
     borderRadius: 10,
+    alignItems: "center",
     paddingTop: 10
   },
   searchbar: {
