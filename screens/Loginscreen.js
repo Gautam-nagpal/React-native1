@@ -15,9 +15,10 @@ import {
 import { createSwitchNavigator } from "react-navigation";
 import { validateLogin } from "../validation/Validation";
 
-const id = "501792203636783";
+const facebookid = "501792203636783";
+const googleid = `395173461203-vv41veehpvcg9fqnmph6b7kvm6dlnj0j.apps.googleusercontent.com`;
 // const FBSDK = require("react-native-fbsdk");
-const { LoginButton, AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
+// const { LoginButton, AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
 // const { LoginManager } = FBSDK;
 
 class Loginscreen extends Component {
@@ -92,20 +93,22 @@ class Loginscreen extends Component {
   };
 
   loginFacebook = async () => {
-    // const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
-    //   id,
-    //   { permissions: ["public_profile", "email", "user_friends"] }
-    // );
-    // if (type === "success") {
-    //   const response = await fetch(
-    //     `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
-    //   );
-    //   console.log("response", response);
-    //   const json = await response.json();
-    //   console.log("User Info ", json);
-    // } else {
-    //   alert(type);
-    // }
+    try {
+      const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
+        facebookid,
+        { permissions: ["public_profile", "email", "user_friends"] }
+      );
+      if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
+        );
+        console.log("response", response);
+        const json = await response.json();
+        console.log("User Info  facebook", json);
+      }
+    } catch (e) {
+      alert("No Internet Connection");
+    }
     // LoginManager.logInWithPublishPermissions([
     //   "public_profile",
     //   "email",
@@ -117,6 +120,26 @@ class Loginscreen extends Component {
     //     alert("Login sucess" + result.grantedPermissions.toString());
     //   }
     // });
+  };
+
+  loginGoogle = async () => {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: googleid,
+
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        console.log("google sign in data", result.user);
+
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      alert(e);
+    }
   };
 
   render() {
@@ -185,7 +208,14 @@ class Loginscreen extends Component {
                 onPress={() => this.loginFacebook()}
               />
             </View>
-            <FacebookService />
+            <View style={{ width: "100%", marginTop: 10 }}>
+              <Button
+                title="Login with Google"
+                style={styles.button1}
+                color="#212121"
+                onPress={this.loginGoogle.bind(this)}
+              />
+            </View>
           </View>
         )}
       </View>
