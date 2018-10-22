@@ -18,12 +18,22 @@ class Favourite extends Component {
     )
   };
   state = {
-    user: []
+    user: [],
+    checkLikes: false
   };
 
   componentDidMount = () => {
     const user = [...this.props.quotes.user];
-    this.setState({ user });
+    this.setState({
+      user
+    });
+    user.map((item, index) => {
+      if (item.liked) {
+        this.setState({
+          checkLikes: true
+        });
+      }
+    });
   };
 
   liked = index => {
@@ -49,13 +59,37 @@ class Favourite extends Component {
     return (
       <View style={styles.container}>
         <Header header="favourite" {...this.props} />
+        {this.state.checkLikes ? (
+          <FlatList
+            style={styles.list}
+            data={this.state.user}
+            renderItem={({ item, index }) => (
+              <View>
+                {item.liked ? (
+                  <View style={styles.box}>
+                    <Text style={styles.text}>{item.key}</Text>
+                    <Icon
+                      name={`md-heart${item.liked ? "" : "-outline"}`}
+                      size={30}
+                      style={styles.like}
+                      onPress={() => this.liked(index)}
+                    />
 
-        <FlatList
-          style={styles.list}
-          data={this.state.user}
-          renderItem={({ item, index }) => (
-            <View>
-              {item.liked ? (
+                    <Image
+                      source={require("../assets/quotes.jpeg")}
+                      style={styles.quoteimage}
+                    />
+                  </View>
+                ) : null}
+              </View>
+            )}
+          />
+        ) : (
+          <FlatList
+            style={styles.list}
+            data={this.state.user}
+            renderItem={({ item, index }) => (
+              <View>
                 <View style={styles.box}>
                   <Text style={styles.text}>{item.key}</Text>
                   <Icon
@@ -70,10 +104,10 @@ class Favourite extends Component {
                     style={styles.quoteimage}
                   />
                 </View>
-              ) : null}
-            </View>
-          )}
-        />
+              </View>
+            )}
+          />
+        )}
       </View>
     );
   }

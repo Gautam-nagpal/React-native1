@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Expo from "expo";
-import FBSDK from "react-native-fbsdk";
-import FacebookService from "./demo";
+// import FBSDK from "react-native-fbsdk";
+// import FacebookService from "./demo";
 
 import {
   Text,
@@ -109,17 +109,6 @@ class Loginscreen extends Component {
     } catch (e) {
       alert("No Internet Connection");
     }
-    // LoginManager.logInWithPublishPermissions([
-    //   "public_profile",
-    //   "email",
-    //   "user_friends"
-    // ]).then(result => {
-    //   if (result.isCancelled) {
-    //     alert("Unable to SignIn ,User cancled ");
-    //   } else {
-    //     alert("Login sucess" + result.grantedPermissions.toString());
-    //   }
-    // });
   };
 
   loginGoogle = async () => {
@@ -213,7 +202,7 @@ class Loginscreen extends Component {
                 title="Login with Google"
                 style={styles.button1}
                 color="#212121"
-                onPress={this.loginGoogle.bind(this)}
+                onPress={() => this.loginGoogle()}
               />
             </View>
           </View>
