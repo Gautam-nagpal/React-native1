@@ -14,7 +14,7 @@ export function validateLogin(user) {
   }
 
   if (Validator.empty(user.password)) {
-    errors.password = "please enter password";
+    errors.password = "Please enter password";
   }
 
   return {

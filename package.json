@@ -19,9 +19,10 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-fbsdk": "^0.8.0",
     "react-native-vector-icons": "^5.0.0",
-    "react-navigation": "^2.17.0",
+    "react-navigation": "^2.18.0",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0"
+    "react_native": "0.0.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "react-native-debugger-open": "^0.3.17"

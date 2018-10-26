@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import Expo from "expo";
-// import FBSDK from "react-native-fbsdk";
-// import FacebookService from "./demo";
+import { loginFacebook, loginGoogle } from "../utils";
 
 import {
   Text,
@@ -14,12 +12,6 @@ import {
 } from "react-native";
 import { createSwitchNavigator } from "react-navigation";
 import { validateLogin } from "../validation/Validation";
-
-const facebookid = "501792203636783";
-const googleid = `395173461203-vv41veehpvcg9fqnmph6b7kvm6dlnj0j.apps.googleusercontent.com`;
-// const FBSDK = require("react-native-fbsdk");
-// const { LoginButton, AccessToken, GraphRequest, GraphRequestManager } = FBSDK;
-// const { LoginManager } = FBSDK;
 
 class Loginscreen extends Component {
   constructor(props) {
@@ -74,7 +66,7 @@ class Loginscreen extends Component {
         })
         .then(responseJson => {
           console.log("api response", responseJson);
-          alert("you are now Logged IN");
+          this.props.navigation.navigate("QuotesHome");
           return responseJson;
         })
         .catch(err => {
@@ -92,55 +84,15 @@ class Loginscreen extends Component {
     return isValid;
   };
 
-  loginFacebook = async () => {
-    try {
-      const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
-        facebookid,
-        { permissions: ["public_profile", "email", "user_friends"] }
-      );
-      if (type === "success") {
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
-        );
-        console.log("response", response);
-        const json = await response.json();
-        console.log("User Info  facebook", json);
-      }
-    } catch (e) {
-      alert("No Internet Connection");
-    }
-  };
-
-  loginGoogle = async () => {
-    try {
-      const result = await Expo.Google.logInAsync({
-        androidClientId: googleid,
-
-        scopes: ["profile", "email"]
-      });
-
-      if (result.type === "success") {
-        console.log("google sign in data", result.user);
-
-        return result.accessToken;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      alert(e);
-    }
-  };
-
   render() {
     let { errors = {}, loader } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Loginscreen</Text>
-
         {loader ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <View>
+            <Text style={styles.text}>Loginscreen</Text>
             <TextInput
               defaultValue=""
               style={styles.searchbar}
@@ -165,7 +117,7 @@ class Loginscreen extends Component {
               <Text style={styles.error}>{errors.password}</Text>
             ) : null}
 
-            <View style={{ width: "90%", marginTop: 10 }}>
+            <View style={{ marginTop: 10 }}>
               <Button
                 title="Login"
                 style={styles.button1}
@@ -173,7 +125,7 @@ class Loginscreen extends Component {
                 onPress={this.login}
               />
             </View>
-            <View style={{ width: "90%", marginTop: 10 }}>
+            <View style={{ marginTop: 10 }}>
               <Button
                 title="Signup"
                 style={styles.button2}
@@ -181,28 +133,21 @@ class Loginscreen extends Component {
                 onPress={() => this.props.navigation.navigate("Signupscreen")}
               />
             </View>
-            <View style={{ width: "100%", marginTop: 10 }}>
-              <Button
-                title="Quotes"
-                style={styles.button1}
-                color="#212121"
-                onPress={() => this.props.navigation.navigate("QuotesHome")}
-              />
-            </View>
-            <View style={{ width: "100%", marginTop: 10 }}>
+
+            <View style={{ marginTop: 10 }}>
               <Button
                 title="Login with fb"
                 style={styles.button1}
                 color="#212121"
-                onPress={() => this.loginFacebook()}
+                onPress={() => loginFacebook()}
               />
             </View>
-            <View style={{ width: "100%", marginTop: 10 }}>
+            <View style={{ marginTop: 10 }}>
               <Button
                 title="Login with Google"
                 style={styles.button1}
                 color="#212121"
-                onPress={() => this.loginGoogle()}
+                onPress={() => loginGoogle()}
               />
             </View>
           </View>
@@ -221,7 +166,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    alignItems: "center",
+    alignSelf: "center",
     color: "#fff"
   },
   button1: {

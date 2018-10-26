@@ -161,9 +161,9 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   error: {
+    alignSelf: "flex-start",
     color: "red",
-    marginTop: 0,
-    paddingTop: 0
+    marginLeft: 18
   }
 });
 
